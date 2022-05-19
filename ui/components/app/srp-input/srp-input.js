@@ -35,9 +35,11 @@ export default function SrpInput({ onChange, srpText }) {
   const onSrpChange = useCallback(
     (newDraftSrp) => {
       let newSrpError = '';
+      let emptyDraftSrp = true;
       const joinedDraftSrp = newDraftSrp.join(' ');
 
       if (newDraftSrp.some((word) => word !== '')) {
+        emptyDraftSrp = false;
         if (newDraftSrp.some((word) => word === '')) {
           newSrpError = t('seedPhraseReq');
         } else if (!isValidMnemonic(joinedDraftSrp)) {
@@ -47,7 +49,7 @@ export default function SrpInput({ onChange, srpText }) {
 
       setDraftSrp(newDraftSrp);
       setSrpError(newSrpError);
-      onChange(newSrpError ? '' : joinedDraftSrp);
+      onChange(newSrpError || emptyDraftSrp ? '' : joinedDraftSrp);
     },
     [setDraftSrp, setSrpError, t, onChange],
   );
